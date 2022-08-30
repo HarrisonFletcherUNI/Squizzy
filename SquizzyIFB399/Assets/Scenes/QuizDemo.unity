@@ -2979,31 +2979,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 964759972}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 33614196}
-        m_TargetAssemblyTypeName: Play_button, Assembly-CSharp
-        m_MethodName: LoadScene
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Quizscreen
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &964759972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3773,31 +3749,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1198507049}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 33614196}
-        m_TargetAssemblyTypeName: Play_button, Assembly-CSharp
-        m_MethodName: LoadScene
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Quizscreen
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1198507049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3961,31 +3913,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1262372040}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 33614196}
-        m_TargetAssemblyTypeName: Play_button, Assembly-CSharp
-        m_MethodName: LoadScene
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Quizscreen
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1262372040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5570,12 +5498,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c2dcd8661606684bae225cea3790f2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  quizLocationName: City Botanic Gardens
+  quizLocationAddress: 147 Alice Street
   questions:
   - {fileID: 11400000, guid: 13c457b2188a2624ca247e5848fd074d, type: 2}
-  answer1: {fileID: 1198507046}
-  answer2: {fileID: 2016049861}
-  answer3: {fileID: 1262372037}
-  answer4: {fileID: 964759969}
+  scoreText: {fileID: 392577301}
+  timerText: {fileID: 2139957516}
+  answer1Object: {fileID: 1198507046}
+  answer2Object: {fileID: 2016049861}
+  answer3Object: {fileID: 1262372037}
+  answer4Object: {fileID: 964759969}
 --- !u!1 &2016049861
 GameObject:
   m_ObjectHideFlags: 0
@@ -5661,31 +5593,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2016049864}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 33614196}
-        m_TargetAssemblyTypeName: Play_button, Assembly-CSharp
-        m_MethodName: LoadScene
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Quizscreen
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2016049864
 MonoBehaviour:
   m_ObjectHideFlags: 0
