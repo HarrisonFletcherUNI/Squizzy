@@ -12,5 +12,5 @@ public class QuestionData : ScriptableObject
     public CorrectAnswer correctAnswer;
    
 }
-public enum CorrectAnswer { A, B, C, D };
+public enum CorrectAnswer { A, B, C, D, Null };
 
