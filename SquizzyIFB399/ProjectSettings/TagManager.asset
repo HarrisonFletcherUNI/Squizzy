@@ -6,6 +6,11 @@ TagManager:
   tags:
   - ProfileScreen
   - HomeScreen
+  - Quiz
+  - QuizLocation
+  - QuizScoreTime
+  - QuizQuestion
+  - QuizAnswers
   layers:
   - Default
   - TransparentFX

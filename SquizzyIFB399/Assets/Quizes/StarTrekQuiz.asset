@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6693398f654234478d1b3ac04c3e89f, type: 3}
+  m_Name: StarTrekQuiz
+  m_EditorClassIdentifier: 
+  quizLocationName: Star Trek Example Quiz
+  quizLocationAddress: Alpha Quadrant
+  hasTimeLimit: 0
+  timeLimit: 0
+  quizQuestions:
+  - questionText: What is Captain Picard's first name?
+    questionImage: {fileID: 2800000, guid: 07ae0d73d62673b4ba855948eccfb091, type: 3}
+    answerA: Jon
+    answerB: Jean-Paul
+    answerC: Jean-Luc
+    answerD: Jukebox
+    correctAnswer: 2
+  - questionText: What is Commander Data's pet cat's name?
+    questionImage: {fileID: 2800000, guid: 6579f7a831c002a4ab7a5c1566e76df0, type: 3}
+    answerA: Spot
+    answerB: Fluff
+    answerC: Flow
+    answerD: Spox
+    correctAnswer: 0
+  - questionText: Geordie La Forge is the Chief of _______ on the Enterprise
+    questionImage: {fileID: 2800000, guid: add301295433422488a8e2ea671ca152, type: 3}
+    answerA: Logistics
+    answerB: Security
+    answerC: Aquatics
+    answerD: Engineering
+    correctAnswer: 3
+  - questionText: Worf went on to become a Strategic Officer on what space station?
+    questionImage: {fileID: 2800000, guid: 0a61f42f1371d8c4d940121e271df4db, type: 3}
+    answerA: Deep Space Five
+    answerB: Deep Space Thirteen
+    answerC: Deep Space Nine
+    answerD: Deep Space Twelve
+    correctAnswer: 2
+  - questionText: What is the maximum Warp of the Enterprise-D?
+    questionImage: {fileID: 2800000, guid: 5da52514d606b924484544131d7d25c9, type: 3}
+    answerA: Warp 9.9
+    answerB: Warp 9.3
+    answerC: Warp 9.5
+    answerD: Warp 9.0
+    correctAnswer: 2

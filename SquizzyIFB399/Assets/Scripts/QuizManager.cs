@@ -3,50 +3,64 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public class QuizManager : MonoBehaviour
 {
-    public string quizLocationName, quizLocationAddress;
-    public QuestionData[] questions;
+    // use this script with the main quiz parent object, in the test scene its just called "ActiveQuiz" 
+    // drag and drop a QuizData scriptable object in the QuizData field and as long as all the UI elements assigned beforehand,
+    // the quiz should configure everything (and play) automatically. All the main parent objects have tags in case they need to be found,
+    // but its easier to just set everything in the inspector
+    
+    [Header("Quiz Data")][Tooltip("Quiz questions, location and other data - Create a new Quiz by selecting 'Quiz' at the top of the asset creation list in the project window")]
+    public QuizData quizData;
     private int quizSize;
-
-    public TextMeshProUGUI locationNameText, locationAddressText;
-    public TextMeshProUGUI scoreText, timerText;
     private float currentScore, timeMinutes, timeSeconds;
 
-    [Header("Active Question")]
-    public int activeQuestion;
-    public TextMeshProUGUI questionText, questionNumberText;
-    public RawImage questionImage;
-    public CorrectAnswer activeAnswer;
-    public string chosenAnswer;
+    [Header("Quiz UI Elements")][Tooltip("The location name (not the full adress)")]
+    public TextMeshProUGUI locationNameText;
+    [Tooltip("The location adress (what you would type into a map)")]
+    public TextMeshProUGUI locationAddressText;
+    public TextMeshProUGUI scoreText, timerText;    
 
-    [Header("Answer Buttons")]
+    // Active Question variables
+    private int activeQuestion;
+    public TextMeshProUGUI questionText, questionNumberText;
+    [Tooltip("The image associated with the active question (set by QuizData)")]
+    public RawImage questionImage; 
+    private CorrectAnswer activeAnswer;
+    [HideInInspector] public string chosenAnswer; // answer buttons interact with this string to choose answers on tap
+    [HideInInspector] public GameObject chosenAnswerObject; // answer buttons interact with this string to choose answers on tap
+
+    [Header("Answer Buttons")] // the full button game objects (not just the button component)
     public GameObject answer1Object;
     public GameObject answer2Object;
     public GameObject answer3Object;
     public GameObject answer4Object;
 
+    [Header("Visual Effects")]
+    public Color correctAnswerColor;
+    public Color incorrectAnswerColor;
+
     [Header("Quiz Results")]
     public float finalScore;
     public float finalTime;
 
-    bool timerActive, quizFinished;
+    bool timerActive;
     
     // Start is called before the first frame update
     void Start()
     {
-        
         // Set Questions
-        quizSize = questions.Length; // get quiz length
+        quizSize = quizData.quizQuestions.Length; // get quiz length
         activeQuestion = 0; // reset active question
         ValidQuizCheck();
 
         SetQuestion();
                     
         // Set Location Info
-        locationNameText.text = quizLocationName;
-        locationAddressText.text = quizLocationAddress;
+        locationNameText.text = quizData.quizLocationName;
+        locationAddressText.text = quizData.quizLocationAddress;
 
         // Score and Time
         scoreText.text = "0/" + quizSize;
@@ -90,30 +104,38 @@ public class QuizManager : MonoBehaviour
         Debug.Log("Setting Question Data...");
 
         // Question
-        questionText.text = questions[activeQuestion].questionText;
+        questionText.text = quizData.quizQuestions[activeQuestion].questionText;
 
         // Question Number
         questionNumberText.text = "Question " + (activeQuestion + 1); // +1 since array starts at 0
 
         // Image
-        questionImage.texture = questions[activeQuestion].questionImage;
+        questionImage.texture = quizData.quizQuestions[activeQuestion].questionImage;
 
         // Answers
         // A
-        answer1Object.GetComponentInChildren<TextMeshProUGUI>().text = questions[activeQuestion].answerA;
+        answer1Object.GetComponentInChildren<TextMeshProUGUI>().text = quizData.quizQuestions[activeQuestion].answerA;
         // B
-        answer2Object.GetComponentInChildren<TextMeshProUGUI>().text = questions[activeQuestion].answerB;
+        answer2Object.GetComponentInChildren<TextMeshProUGUI>().text = quizData.quizQuestions[activeQuestion].answerB;
         // C
-        answer3Object.GetComponentInChildren<TextMeshProUGUI>().text = questions[activeQuestion].answerC;
+        answer3Object.GetComponentInChildren<TextMeshProUGUI>().text = quizData.quizQuestions[activeQuestion].answerC;
         // D
-        answer4Object.GetComponentInChildren<TextMeshProUGUI>().text = questions[activeQuestion].answerD;
+        answer4Object.GetComponentInChildren<TextMeshProUGUI>().text = quizData.quizQuestions[activeQuestion].answerD;
 
-        activeAnswer = questions[activeQuestion].correctAnswer;
+        activeAnswer = quizData.quizQuestions[activeQuestion].correctAnswer;
         chosenAnswer = "Unanswered";
     }
 
-    public void ChooseAnswer(string answer)
-    {
+    public void ChooseAnswer(GameObject answerObject)
+    {        
+        string answer = ""; // this only works if assigned an empty string don't ask me why
+
+        // check which answer the button corresponds to
+        if (answerObject == answer1Object) { answer = "A"; }
+        else if (answerObject == answer2Object) { answer = "B"; }
+        else if (answerObject == answer3Object) { answer = "C"; }
+        else if (answerObject == answer4Object) { answer = "D"; }
+        
         // check the chosen answer to the correct answer (compare as strings)
         if (answer == activeAnswer.ToString())
         {
@@ -121,15 +143,15 @@ public class QuizManager : MonoBehaviour
             // increase score by 1
             currentScore++;
             scoreText.text = currentScore + "/" + quizSize;
+            StartCoroutine(CorrectAnswer(answerObject.transform, 1.5f));
         }
         else if (answer != activeAnswer.ToString())
         {
             Debug.Log("Incorrect!");
+            ButtonShake(answerObject.transform); // shake wrong answer           
         }
 
-
-        // go to next question
-        NextQuestion();
+        StartCoroutine(NextQuestionWait(1.5f)); // wait for animation to finish then go the next question
     }
 
     public void NextQuestion()
@@ -156,7 +178,7 @@ public class QuizManager : MonoBehaviour
         QuizResults();
 
         timerActive = false;
-        quizFinished = true;
+        //quizFinished = true;
     }
 
     void QuizResults()
@@ -176,5 +198,28 @@ public class QuizManager : MonoBehaviour
     {       
         // check if there are actually questions
         if (quizSize <= 0) { Debug.Log("Error: No questions set"); } 
+    }
+
+    // simple shake tween for when the wrong answer is chosen
+    void ButtonShake(Transform objectToShake)
+    {
+        objectToShake.DOPunchRotation(new Vector3(0, 0, 2), 1, 20, 2);
+    }
+
+    // scale and highlight for correct answer
+    IEnumerator CorrectAnswer(Transform objectToHighlight, float waitTime)
+    {
+        Vector3 originalScale = objectToHighlight.localScale;
+        objectToHighlight.GetComponent<Image>().color = correctAnswerColor;
+        objectToHighlight.DOScale(objectToHighlight.localScale * 1.1f, waitTime / 3);
+        yield return new WaitForSeconds(waitTime / 3);
+        objectToHighlight.GetComponent<Image>().color = Color.white;
+        objectToHighlight.DOScale(originalScale, waitTime / 3);
+    }
+
+    IEnumerator NextQuestionWait(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        NextQuestion();
     }
 }
