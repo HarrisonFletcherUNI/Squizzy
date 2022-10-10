@@ -1,0 +1,143 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor.UI;
+using LootLocker.Requests;
+
+public class PlayerLogin : MonoBehaviour
+{
+    public TMPro.TMP_InputField userEmail, userPass, newUserEmail, newUserPass, newUserNickname;
+    // Start is called before the first frame update
+    void Start()
+    {
+        //StartCoroutine(LoginRoutine());
+    }
+    //IEnumerator LoginRoutine()
+    //{
+    //    bool done = false;
+    //    LootLockerSDKManager.StartGuestSession((response) =>
+    //    {
+    //        if (response.success)
+    //        {
+    //            Debug.Log("Player was logged in");
+    //            PlayerPrefs.SetString("PlayerID", response.player_id.ToString());
+    //            done = true;
+    //        }
+    //        else
+    //        {
+    //            Debug.Log("Couldnt start");
+    //        }
+    //    });
+    //    yield return new WaitWhile(() => done == false);
+    //}
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+    public void Login()
+    {
+        string email = userEmail.text;
+        string password = userPass.text;
+        LootLockerSDKManager.WhiteLabelLogin(email, password, response =>
+        {
+            if (!response.success)
+            {
+                //cant login
+            }
+            else
+            {
+                //player logged in
+            }
+            LootLockerSDKManager.StartWhiteLabelSession((response) =>
+            {
+                if (!response.success)
+                {
+                    // Error
+                    // Animate the buttons
+                    Debug.Log("error starting LootLocker session");
+                    return;
+                }
+                else
+                {
+                    // Session was succesfully started;
+                    // animate the buttons
+                    Debug.Log("session started successfully");
+                    // Write the current players name to the screen
+
+                }
+            });
+        });
+    }
+    public void NewUser()
+    {
+        string email = newUserEmail.text;
+        string password = newUserPass.text;
+        string newNickName = newUserNickname.text;
+
+        // Local function for errors
+        void Error(string error)
+        {
+            Debug.Log(error);
+        }
+
+        LootLockerSDKManager.WhiteLabelSignUp(email, password, (response) =>
+        {
+            if (!response.success)
+            {
+                Error(response.Error);
+                return;
+            }
+            else
+            {
+                // Succesful response
+                // Log in player to set name
+                // Login the player
+                LootLockerSDKManager.WhiteLabelLogin(email, password, false, response =>
+                {
+                    if (!response.success)
+                    {
+                        Error(response.Error);
+                        return;
+                    }
+                    // Start session
+                    LootLockerSDKManager.StartWhiteLabelSession((response) =>
+                    {
+                        if (!response.success)
+                        {
+                            Error(response.Error);
+                            return;
+                        }
+                        // Set nickname to be public UID if nothing was provided
+                        if (newNickName == "")
+                        {
+                            newNickName = response.public_uid;
+                        }
+                        // Set new nickname for player
+                        LootLockerSDKManager.SetPlayerName(newNickName, (response) =>
+                        {
+                            if (!response.success)
+                            {
+                                Error(response.Error);
+                                return;
+                            }
+
+                            // End this session
+                            LootLockerSessionRequest sessionRequest = new LootLockerSessionRequest();
+                            LootLocker.LootLockerAPIManager.EndSession(sessionRequest, (response) =>
+                            {
+                                if (!response.success)
+                                {
+                                    Error(response.Error);
+                                    return;
+                                }
+                                Debug.Log("Account Created");
+                            });
+                        });
+                    });
+                });
+            }
+        });
+    }
+}
