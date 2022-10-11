@@ -6,7 +6,7 @@ using LootLocker.Requests;
 
 public class PlayerLogin : MonoBehaviour
 {
-    public TMPro.TMP_InputField userEmail, userPass, newUserEmail, newUserPass, newUserNickname;
+    public TMPro.TMP_InputField userEmail, userPass, newUserEmail, newUserPass, newUserNickname, resetEmail;
     // Start is called before the first frame update
     void Start()
     {
@@ -140,4 +140,37 @@ public class PlayerLogin : MonoBehaviour
             }
         });
     }
+    public void ResetPassword()
+    {
+        string email = resetEmail.text;
+        LootLockerSDKManager.WhiteLabelRequestPassword(email, (response) =>
+        {
+            if (!response.success)
+            {
+                Debug.Log("error requesting password reset");
+
+                return;
+            }
+
+            Debug.Log("Requested password reset successfully");
+        });
+
+
+    }
+    public void GuestLogin()
+    {
+        LootLockerSDKManager.StartGuestSession((response) =>
+        {
+            if (!response.success)
+            {
+                Debug.Log("error starting LootLocker session");
+
+                return;
+            }
+
+            Debug.Log("successfully started LootLocker session");
+        });
+    }
+
 }
+
