@@ -5,9 +5,14 @@ using UnityEngine.SceneManagement;
 /*
 code taken from a youtube tutorial by GameDevTraum. https://www.youtube.com/watch?v=05OfmBIf5os
 */
-public class Play_button : MonoBehaviour
+public class SceneLoader : MonoBehaviour
 {
-    public void LoadScene (string scene){
+    public void LoadSceneString (string scene){
         SceneManager.LoadScene(scene); // checks if there is a scene with the same name as
+    }
+
+    public void LoadSceneNumber(int sceneNumber)
+    {
+        SceneManager.LoadScene(sceneNumber); // checks if there is a scene with the same number
     }
 }

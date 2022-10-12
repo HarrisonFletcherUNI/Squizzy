@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.Events;
 
 public class QuizManager : MonoBehaviour
 {
@@ -38,12 +39,24 @@ public class QuizManager : MonoBehaviour
     public GameObject answer3Object;
     public GameObject answer4Object;
 
+    [Header("Quiz Screens")]
+    public GameObject startScreen;
+    public GameObject endScreen;
+
     [Header("Quiz Results")]
     public float finalScore;
     public float finalTime;
 
     bool timerActive;
-    
+
+    [SerializeField] UnityEvent OnQuizStart;
+    //[SerializeField] UnityEvent OnQuizComplete;
+    [SerializeField] UnityEvent OnQuizEnd;
+    [SerializeField] UnityEvent OnQuestionSelect;
+    [SerializeField] UnityEvent OnQuestionCorrect;
+    [SerializeField] UnityEvent OnQuestionIncorrect;
+    [SerializeField] UnityEvent OnNewQuestion;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -60,8 +73,18 @@ public class QuizManager : MonoBehaviour
 
         // Score and Time
         scoreText.text = "0/" + quizSize;
-
-        timerActive = true;
+        
+        
+        // activate start screen
+        if (startScreen != null)
+        {
+            startScreen.SetActive(true);
+        }
+        // deactivate end screen
+        if (endScreen != null)
+        {
+            endScreen.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -126,7 +149,10 @@ public class QuizManager : MonoBehaviour
     }
 
     public void ChooseAnswer(GameObject answerObject)
-    {        
+    {
+        // Event - this will trigger at the same time as the correct/incorrect events
+        OnQuestionSelect.Invoke();
+        
         string answer = ""; // this only works if assigned an empty string don't ask me why
 
         // check which answer the button corresponds to
@@ -142,6 +168,10 @@ public class QuizManager : MonoBehaviour
         if (answer == activeAnswer.ToString())
         {
             Debug.Log("Correct!");
+
+            // Event
+            OnQuestionCorrect.Invoke();
+
             // increase score by 1
             currentScore++;
             scoreText.text = currentScore + "/" + quizSize;
@@ -150,7 +180,11 @@ public class QuizManager : MonoBehaviour
         else if (answer != activeAnswer.ToString())
         {
             Debug.Log("Incorrect!");
-            ButtonShake(answerObject.transform); // shake wrong answer           
+
+            // Event
+            OnQuestionIncorrect.Invoke();
+
+            ButtonShake(answerObject.transform); // shake wrong answer                       
         }
 
         StartCoroutine(NextQuestionWait(1.5f)); // wait for animation to finish then go the next question
@@ -170,30 +204,11 @@ public class QuizManager : MonoBehaviour
         // else, continue to next question
         else
         {
+            // Event
+            OnNewQuestion.Invoke();
+
             SetQuestion();
         }        
-    }
-
-    void EndQuiz()
-    {       
-        // get quiz results
-        QuizResults();
-
-        timerActive = false;
-        //quizFinished = true;
-    }
-
-    void QuizResults()
-    {
-        // collect final score
-        finalScore = currentScore;
-        // collect final time
-        finalTime = (timeMinutes * 60) + timeSeconds; // total seconds
-
-        finalTime = Mathf.Round(finalTime);
-
-
-        Debug.Log("Quiz Complete! Final Score: " + finalScore);
     }
 
     void ValidQuizCheck()
@@ -247,5 +262,43 @@ public class QuizManager : MonoBehaviour
         answer3Object.GetComponent<QuizButton>().EnableButton();
         // D
         answer4Object.GetComponent<QuizButton>().EnableButton();
+    }
+
+    public void StartQuiz()
+    {
+        // enable timer
+        timerActive = true;
+        
+        // if the start screen is defined but isn't deactivated on begin button for whatever reason
+        if (startScreen.activeSelf && startScreen != null)
+        {
+            startScreen.SetActive(false);
+        }
+
+        OnQuizStart.Invoke();
+    }
+
+    void EndQuiz()
+    {
+        // get quiz results
+        QuizResults();
+
+        timerActive = false;
+        //quizFinished = true;
+
+        OnQuizEnd.Invoke();
+    }
+
+    void QuizResults()
+    {
+        // collect final score
+        finalScore = currentScore;
+        // collect final time
+        finalTime = (timeMinutes * 60) + timeSeconds; // total seconds
+
+        finalTime = Mathf.Round(finalTime);
+
+
+        Debug.Log("Quiz Complete! Final Score: " + finalScore);
     }
 }
