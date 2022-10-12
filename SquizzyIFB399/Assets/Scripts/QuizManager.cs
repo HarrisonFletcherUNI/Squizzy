@@ -38,10 +38,6 @@ public class QuizManager : MonoBehaviour
     public GameObject answer3Object;
     public GameObject answer4Object;
 
-    [Header("Visual Effects")]
-    public Color correctAnswerColor;
-    public Color incorrectAnswerColor;
-
     [Header("Quiz Results")]
     public float finalScore;
     public float finalTime;
@@ -124,6 +120,9 @@ public class QuizManager : MonoBehaviour
 
         activeAnswer = quizData.quizQuestions[activeQuestion].correctAnswer;
         chosenAnswer = "Unanswered";
+
+        // enable buttons
+        EnableButtons();
     }
 
     public void ChooseAnswer(GameObject answerObject)
@@ -135,7 +134,10 @@ public class QuizManager : MonoBehaviour
         else if (answerObject == answer2Object) { answer = "B"; }
         else if (answerObject == answer3Object) { answer = "C"; }
         else if (answerObject == answer4Object) { answer = "D"; }
-        
+
+        // disable button interaction
+        DisableButtons();
+
         // check the chosen answer to the correct answer (compare as strings)
         if (answer == activeAnswer.ToString())
         {
@@ -201,25 +203,49 @@ public class QuizManager : MonoBehaviour
     }
 
     // simple shake tween for when the wrong answer is chosen
-    void ButtonShake(Transform objectToShake)
+    void ButtonShake(Transform button)
     {
-        objectToShake.DOPunchRotation(new Vector3(0, 0, 2), 1, 20, 2);
+        button.GetComponent<QuizButton>().AnswerIncorrect();
+        button.DOPunchRotation(new Vector3(0, 0, 2), 1, 20, 2);
     }
 
     // scale and highlight for correct answer
-    IEnumerator CorrectAnswer(Transform objectToHighlight, float waitTime)
+    IEnumerator CorrectAnswer(Transform chosenButton, float waitTime)
     {
-        Vector3 originalScale = objectToHighlight.localScale;
-        objectToHighlight.GetComponent<Image>().color = correctAnswerColor;
-        objectToHighlight.DOScale(objectToHighlight.localScale * 1.1f, waitTime / 3);
+        Vector3 originalScale = chosenButton.localScale;
+        chosenButton.GetComponent<QuizButton>().AnswerCorrect();
+        chosenButton.DOScale(chosenButton.localScale * 1.1f, waitTime / 3);
         yield return new WaitForSeconds(waitTime / 3);
-        objectToHighlight.GetComponent<Image>().color = Color.white;
-        objectToHighlight.DOScale(originalScale, waitTime / 3);
+        chosenButton.DOScale(originalScale, waitTime / 3);
     }
 
     IEnumerator NextQuestionWait(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
         NextQuestion();
+    }
+
+    void DisableButtons()
+    {
+        // A
+        answer1Object.GetComponent<QuizButton>().DisableButton();
+        // B
+        answer2Object.GetComponent<QuizButton>().DisableButton();
+        // C
+        answer3Object.GetComponent<QuizButton>().DisableButton();
+        // D
+        answer4Object.GetComponent<QuizButton>().DisableButton();
+    }
+
+    void EnableButtons()
+    {        
+        // A
+        answer1Object.GetComponent<QuizButton>().EnableButton();
+        // B
+        answer2Object.GetComponent<QuizButton>().EnableButton();
+        // C
+        answer3Object.GetComponent<QuizButton>().EnableButton();
+        // D
+        answer4Object.GetComponent<QuizButton>().EnableButton();
     }
 }
