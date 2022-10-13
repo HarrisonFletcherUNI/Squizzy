@@ -1,0 +1,119 @@
+Question: What shape was the Albert St pond before 1930?
+A: Circular
+B: Kidney
+C: Square
+Correct: Kidney
+
+Question: How many posts support the centre section of the rotunda?
+A: 4
+B: 6
+C: 8
+Correct: 6
+
+Question: How many children do they have?
+A: 1
+B: 2
+C: 3
+Correct: 2
+
+Question: What year was this memorial unveiled?
+A: 1988
+B: 2008
+C: 2018
+Correct: 2018
+
+Question: How many steps up to Parliament House?
+A: 12
+B: 14
+C: 16
+Correct: 14
+
+Question: What is the name of the sculpture directly behind this pond?
+A: Silver Star II
+B: Shooting Star II
+C: Morning Star II
+Correct: Morning Star II
+
+Question: What type of palm is this?
+A: Jack
+B: Queen
+C: King
+Correct: Queen
+
+Question:What year is under the crown?
+A: 1865
+B: 1876
+C: 1888
+Correct: 1865
+
+Question: How many palm trees encircle this garden bed?
+A: 19
+B: 21
+C: 23
+Correct: 23
+
+Question: What year was this made?
+A: 1803
+B: 1813
+C: 1823
+Correct: 1803
+
+Question: What colour is this in real life?
+A: Black
+B: White
+C: Red
+Correct: Black
+
+Question: How many of these are in the playground?
+A: 4
+B: 5
+C: 6
+Correct: 5
+
+Question: What year's flood does this marker commemorate?
+A: 1983
+B: 1974
+C: 2011
+Correct: 1974
+
+Question: What brand of padlock guards the tree?
+A: Masterlock
+B: Multilock
+C: Lockwood
+Correct: Lockwood
+
+Question: How many lions are here?
+A: 2
+B: 4
+C: 6
+Correct: 2
+
+Question: When was sugar first produced in Queensland?
+A: 1826
+B: 1862
+C: 1901
+Correct: 1862
+
+Question: What building is west from here?
+A: River City
+B: Quay West
+C: Cbus Super
+Correct: Cbus Super
+
+Question: Who is this statue of?
+A: Brolga Bill
+B: Lindsay Dean
+C: Jemmy Morrill
+Correct: Jemmy Morrill
+
+Question: Where is this species of tree from?
+A: South America
+B: Southeast Asia
+C: South Africa
+Correct: South America
+
+Question: Who used to live in this house?
+A: The Governor
+B: The Lord Mayor
+C: The Curator
+Correct: The Curator
