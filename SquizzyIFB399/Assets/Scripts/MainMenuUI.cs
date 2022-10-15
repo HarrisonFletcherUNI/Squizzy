@@ -7,8 +7,8 @@ public class MainMenuUI : MonoBehaviour
     public static MainMenuUI instance;
 
     //Screen object variables
-    public GameObject loginUI;
-    public GameObject registerUI;
+    public GameObject loginUI, registerUI, resetUI;
+    
 
     private void Awake()
     {
@@ -28,10 +28,16 @@ public class MainMenuUI : MonoBehaviour
     {
         loginUI.SetActive(true);
         registerUI.SetActive(false);
+        resetUI.SetActive(false);
     }
     public void RegisterScreen() // Regester button
     {
         loginUI.SetActive(false);
         registerUI.SetActive(true);
+    }
+    public void ResetPasswordScreen() //Reset password screen
+    {
+        loginUI.SetActive(false);
+        resetUI.SetActive(true);
     }
 }

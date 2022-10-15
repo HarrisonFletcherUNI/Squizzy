@@ -1,0 +1,139 @@
+Question: How many of these lightposts are at the main gate?
+A: 6
+B: 8
+C: 10
+D:
+Answer: 8
+
+Question: How many silver poles are around the clock?
+A: 16
+B: 18
+C: 20
+D:
+Answer: 18
+
+Question: What is the other girl like this holding?
+A: Bird
+B: Umbrella
+C: Flower
+D:
+Answer: Flower
+
+Question: What year did the City of Brisbane buy the land for New Farm Park?
+A: 1893
+B: 1913
+C: 1937
+D:
+Answer: 1913
+
+Question: How many harps are in the bandstand?
+A: 4
+B: 6
+C: 8
+D:
+Answer: 4
+
+Question: How many steps down to the river?
+A: 13
+B: 15
+C: 17
+D: 19
+Answer: 17
+
+Question: What year's flood does this marker commemorate?
+A: 1893
+B: 1974
+C: 2010
+D:
+Answer: 1974
+
+Question: What is the artwork called?
+A: Flood
+B: Rising Water
+C: Watermark
+D: High Tide
+Answer: Watermark
+
+Question: Eat, drink and be ...
+A: Mary
+B: Merry
+C: Married
+D:
+Answer: Mary
+
+Question: What fruit can you find in this mural?
+A: Apple
+B: Banana
+C: Orange
+D: Strawberry
+Answer: Apple
+
+Question: Who have you been reported to?
+A: The Police
+B: The Premier
+C: The Authorities
+D:
+Answer: The Authorities
+
+Question: What does the sign say?
+A: Start
+B: Go
+C: Stop
+D: Hammer time
+Answer: Go
+
+Question: Who is the artist?
+A: Mark Scottes
+B: Scott Marsh
+C: Max Galves
+D:
+Answer: Scott Marsh
+
+Question: What year was the Powerhouse Centre for the Arts opened?
+A: 1988
+B: 1999
+C: 2000
+D:
+Answer: 2000
+
+Question: Where does the bikeway go to?
+A: Fortitude Valley
+B: Kangaroo Point
+C: Newstead
+D:
+Answer: Newstead
+
+Question: How many dragon eggs have completely hatched?
+A: 2
+B: 3
+C: 4
+D:
+Answer: 2
+
+Question: What amphibian can you find here?
+A: Crocodile
+B: Frog
+C: Turtle
+D: Snake
+Answer: Frog
+
+Question: What mythical creatures surround this tree?
+A: fairies
+B: Dragons
+C: Unicorns
+D:
+Answer: Dragons
+
+Question: What mythical creature can you see through this window?
+A: Fairy
+B: Dragon
+C: Unicorn
+D:
+Answer: Unicorn
+
+Question: What season is located North East?
+A: Autumn
+B: Winter
+C: Spring
+D: Summer
+Answer: Spring

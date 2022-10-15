@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.Events;
 
 public class QuizManager : MonoBehaviour
 {
@@ -38,16 +39,24 @@ public class QuizManager : MonoBehaviour
     public GameObject answer3Object;
     public GameObject answer4Object;
 
-    [Header("Visual Effects")]
-    public Color correctAnswerColor;
-    public Color incorrectAnswerColor;
+    [Header("Quiz Screens")]
+    public GameObject startScreen;
+    public GameObject endScreen;
 
     [Header("Quiz Results")]
     public float finalScore;
     public float finalTime;
 
     bool timerActive;
-    
+
+    [SerializeField] UnityEvent OnQuizStart;
+    //[SerializeField] UnityEvent OnQuizComplete;
+    [SerializeField] UnityEvent OnQuizEnd;
+    [SerializeField] UnityEvent OnQuestionSelect;
+    [SerializeField] UnityEvent OnQuestionCorrect;
+    [SerializeField] UnityEvent OnQuestionIncorrect;
+    [SerializeField] UnityEvent OnNewQuestion;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -64,8 +73,18 @@ public class QuizManager : MonoBehaviour
 
         // Score and Time
         scoreText.text = "0/" + quizSize;
-
-        timerActive = true;
+        
+        
+        // activate start screen
+        if (startScreen != null)
+        {
+            startScreen.SetActive(true);
+        }
+        // deactivate end screen
+        if (endScreen != null)
+        {
+            endScreen.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -124,10 +143,16 @@ public class QuizManager : MonoBehaviour
 
         activeAnswer = quizData.quizQuestions[activeQuestion].correctAnswer;
         chosenAnswer = "Unanswered";
+
+        // enable buttons
+        EnableButtons();
     }
 
     public void ChooseAnswer(GameObject answerObject)
-    {        
+    {
+        // Event - this will trigger at the same time as the correct/incorrect events
+        OnQuestionSelect.Invoke();
+        
         string answer = ""; // this only works if assigned an empty string don't ask me why
 
         // check which answer the button corresponds to
@@ -135,11 +160,18 @@ public class QuizManager : MonoBehaviour
         else if (answerObject == answer2Object) { answer = "B"; }
         else if (answerObject == answer3Object) { answer = "C"; }
         else if (answerObject == answer4Object) { answer = "D"; }
-        
+
+        // disable button interaction
+        DisableButtons();
+
         // check the chosen answer to the correct answer (compare as strings)
         if (answer == activeAnswer.ToString())
         {
             Debug.Log("Correct!");
+
+            // Event
+            OnQuestionCorrect.Invoke();
+
             // increase score by 1
             currentScore++;
             scoreText.text = currentScore + "/" + quizSize;
@@ -148,7 +180,11 @@ public class QuizManager : MonoBehaviour
         else if (answer != activeAnswer.ToString())
         {
             Debug.Log("Incorrect!");
-            ButtonShake(answerObject.transform); // shake wrong answer           
+
+            // Event
+            OnQuestionIncorrect.Invoke();
+
+            ButtonShake(answerObject.transform); // shake wrong answer                       
         }
 
         StartCoroutine(NextQuestionWait(1.5f)); // wait for animation to finish then go the next question
@@ -168,17 +204,89 @@ public class QuizManager : MonoBehaviour
         // else, continue to next question
         else
         {
+            // Event
+            OnNewQuestion.Invoke();
+
             SetQuestion();
         }        
     }
 
-    void EndQuiz()
+    void ValidQuizCheck()
     {       
+        // check if there are actually questions
+        if (quizSize <= 0) { Debug.Log("Error: No questions set"); } 
+    }
+
+    // simple shake tween for when the wrong answer is chosen
+    void ButtonShake(Transform button)
+    {
+        button.GetComponent<QuizButton>().AnswerIncorrect();
+        button.DOPunchRotation(new Vector3(0, 0, 2), 1, 20, 2);
+    }
+
+    // scale and highlight for correct answer
+    IEnumerator CorrectAnswer(Transform chosenButton, float waitTime)
+    {
+        Vector3 originalScale = chosenButton.localScale;
+        chosenButton.GetComponent<QuizButton>().AnswerCorrect();
+        chosenButton.DOScale(chosenButton.localScale * 1.1f, waitTime / 3);
+        yield return new WaitForSeconds(waitTime / 3);
+        chosenButton.DOScale(originalScale, waitTime / 3);
+    }
+
+    IEnumerator NextQuestionWait(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        NextQuestion();
+    }
+
+    void DisableButtons()
+    {
+        // A
+        answer1Object.GetComponent<QuizButton>().DisableButton();
+        // B
+        answer2Object.GetComponent<QuizButton>().DisableButton();
+        // C
+        answer3Object.GetComponent<QuizButton>().DisableButton();
+        // D
+        answer4Object.GetComponent<QuizButton>().DisableButton();
+    }
+
+    void EnableButtons()
+    {        
+        // A
+        answer1Object.GetComponent<QuizButton>().EnableButton();
+        // B
+        answer2Object.GetComponent<QuizButton>().EnableButton();
+        // C
+        answer3Object.GetComponent<QuizButton>().EnableButton();
+        // D
+        answer4Object.GetComponent<QuizButton>().EnableButton();
+    }
+
+    public void StartQuiz()
+    {
+        // enable timer
+        timerActive = true;
+        
+        // if the start screen is defined but isn't deactivated on begin button for whatever reason
+        if (startScreen.activeSelf && startScreen != null)
+        {
+            startScreen.SetActive(false);
+        }
+
+        OnQuizStart.Invoke();
+    }
+
+    void EndQuiz()
+    {
         // get quiz results
         QuizResults();
 
         timerActive = false;
         //quizFinished = true;
+
+        OnQuizEnd.Invoke();
     }
 
     void QuizResults()
@@ -192,34 +300,5 @@ public class QuizManager : MonoBehaviour
 
 
         Debug.Log("Quiz Complete! Final Score: " + finalScore);
-    }
-
-    void ValidQuizCheck()
-    {       
-        // check if there are actually questions
-        if (quizSize <= 0) { Debug.Log("Error: No questions set"); } 
-    }
-
-    // simple shake tween for when the wrong answer is chosen
-    void ButtonShake(Transform objectToShake)
-    {
-        objectToShake.DOPunchRotation(new Vector3(0, 0, 2), 1, 20, 2);
-    }
-
-    // scale and highlight for correct answer
-    IEnumerator CorrectAnswer(Transform objectToHighlight, float waitTime)
-    {
-        Vector3 originalScale = objectToHighlight.localScale;
-        objectToHighlight.GetComponent<Image>().color = correctAnswerColor;
-        objectToHighlight.DOScale(objectToHighlight.localScale * 1.1f, waitTime / 3);
-        yield return new WaitForSeconds(waitTime / 3);
-        objectToHighlight.GetComponent<Image>().color = Color.white;
-        objectToHighlight.DOScale(originalScale, waitTime / 3);
-    }
-
-    IEnumerator NextQuestionWait(float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
-        NextQuestion();
     }
 }
