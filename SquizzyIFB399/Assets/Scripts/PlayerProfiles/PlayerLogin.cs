@@ -8,34 +8,6 @@ public class PlayerLogin : MonoBehaviour
 {
     public TMPro.TMP_InputField userEmail, userPass, newUserEmail, newUserPass, newUserNickname, resetEmail;
     // Start is called before the first frame update
-    void Start()
-    {
-        //StartCoroutine(LoginRoutine());
-    }
-    //IEnumerator LoginRoutine()
-    //{
-    //    bool done = false;
-    //    LootLockerSDKManager.StartGuestSession((response) =>
-    //    {
-    //        if (response.success)
-    //        {
-    //            Debug.Log("Player was logged in");
-    //            PlayerPrefs.SetString("PlayerID", response.player_id.ToString());
-    //            done = true;
-    //        }
-    //        else
-    //        {
-    //            Debug.Log("Couldnt start");
-    //        }
-    //    });
-    //    yield return new WaitWhile(() => done == false);
-    //}
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void Login()
     {
         string email = userEmail.text;
@@ -77,7 +49,7 @@ public class PlayerLogin : MonoBehaviour
         string newNickName = newUserNickname.text;
 
         // Local function for errors
-        void Error(string error)
+        static void Error(string error)
         {
             Debug.Log(error);
         }
