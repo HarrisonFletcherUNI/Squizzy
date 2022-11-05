@@ -4,18 +4,16 @@ using UnityEngine;
 
 public class LeaderboardSelect : MonoBehaviour
 {
-    public GameObject[] leaderboardScreens;
-    int currentSelection;
-    public void ShowLeaderboard(int selection)
+    public GameObject menuScreen, leaderboardScreen;
+    public void ShowLeaderboard()
     {
-        leaderboardScreens[0].SetActive(false);
-        leaderboardScreens[selection].SetActive(true);
-        currentSelection = selection;
+        menuScreen.SetActive(false);
+        leaderboardScreen.SetActive(true);
     }
     public void ShowSelectScreen()
     {
-        leaderboardScreens[currentSelection].SetActive(false);
-        leaderboardScreens[0].SetActive(true);
+        menuScreen.SetActive(false);
+        leaderboardScreen.SetActive(true);
 
     }
 }

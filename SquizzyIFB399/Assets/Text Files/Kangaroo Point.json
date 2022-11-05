@@ -1,0 +1,72 @@
+[{
+	"Question": "What year was Kangaroo Point Park officially opened?",
+	"answerA": "1794",
+	"answerB": "1988",
+	"answerC": "2000",
+	"answerD": "2010",
+	"correctAnswer": "D"
+},
+{	"Question": "How many levels does the amphitheatre have?",
+	"answerA": "6",
+	"answerB": "8",
+	"answerC": "10",
+	"answerD": "12",
+	"correctAnswer": "C"
+},
+{	"Question": "What first opened on this site in 1867?",
+	"answerA": "Church",
+	"answerB": "School",
+	"answerC": "Hospital",
+	"answerD": "Police Station",
+	"correctAnswer": "B"
+},
+{	"Question": "How many versions of the sun are in this artwork?",
+	"answerA": "5",
+	"answerB": "6",
+	"answerC": "7",
+	"answerD": "8",
+	"correctAnswer": "C"
+},
+{	"Question": "What is the highest object on top of St Mary's?",
+	"answerA": "Cross",
+	"answerB": "Bell",
+	"answerC": "Gargoyle",
+	"answerD": "Antenna",
+	"correctAnswer": "A"
+},
+{	"Question": "This wreath represents Australia and which other country?",
+	"answerA": "England",
+	"answerB": "Scotland",
+	"answerC": "USA",
+	"answerD": "New Zealand",
+	"correctAnswer": "D"
+},
+{	"Question": "Which big bridge can you see from this foot bridge?",
+	"answerA": "Gateway Bridge",
+	"answerB": "Goodwill Bridge",
+	"answerC": "Go Between Bridge",
+	"answerD": "Storey Bridge",
+	"correctAnswer": "D"
+},
+{	"Question": "How many worms are in the park?",
+	"answerA": "4",
+	"answerB": "5",
+	"answerC": "6",
+	"answerD": "7",
+	"correctAnswer": "C"
+},
+{	"Question": "What type of pine tree is this?",
+	"answerA": "Kauri",
+	"answerB": "Hoop",
+	"answerC": "Wollemi",
+	"answerD": "Cypress",
+	"correctAnswer": "Hoop"
+},
+{	"Question": "Looking up, inside the spire, what shape do you see?",
+	"answerA": "Triangle",
+	"answerB": "Pentagon",
+	"answerC": "Hexagon",
+	"answerD": "Octagon",
+	"correctAnswer": "D"
+}
+]
