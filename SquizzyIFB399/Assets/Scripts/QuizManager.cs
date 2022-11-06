@@ -15,8 +15,9 @@ public class QuizManager : MonoBehaviour
     
     [Header("Quiz Data")][Tooltip("Quiz questions, location and other data - Create a new Quiz by selecting 'Quiz' at the top of the asset creation list in the project window")]
     public QuizData quizData;
-    private int quizSize;
-    private float currentScore, timeMinutes, timeSeconds;
+    public int quizSize;
+    public float quizTimeGoal; // this is converted to total seconds
+    public float currentScore, timeMinutes, timeSeconds;
 
     [Header("Quiz UI Elements")][Tooltip("The location name (not the full adress)")]
     public TextMeshProUGUI locationNameText;
@@ -41,21 +42,35 @@ public class QuizManager : MonoBehaviour
 
     [Header("Quiz Screens")]
     public GameObject startScreen;
+    public GameObject quizScreen;
     public GameObject endScreen;
 
     [Header("Quiz Results")]
     public float finalScore;
     public float finalTime;
+    public bool scoreGood, scorePerfect, underTime;
+    
+    [Header("Results: Texts")]
+    [SerializeField] TextMeshProUGUI squizzyResultText;
+    public string failScore, badScore, mediumScore, goodScore, perfectScore;
 
+    [Header("Other")]
     bool timerActive;
+    public bool quizEnded;
+
+    [Header("Events")]
 
     [SerializeField] UnityEvent OnQuizStart;
     //[SerializeField] UnityEvent OnQuizComplete;
     [SerializeField] UnityEvent OnQuizEnd;
+    [SerializeField] UnityEvent OnQuizReset;
     [SerializeField] UnityEvent OnQuestionSelect;
     [SerializeField] UnityEvent OnQuestionCorrect;
     [SerializeField] UnityEvent OnQuestionIncorrect;
     [SerializeField] UnityEvent OnNewQuestion;
+    [SerializeField] UnityEvent OnPerfectScore;
+    [SerializeField] UnityEvent OnTimeGoal;
+
 
     // Start is called before the first frame update
     void Start()
@@ -63,8 +78,9 @@ public class QuizManager : MonoBehaviour
         // Set Questions
         quizSize = quizData.quizQuestions.Length; // get quiz length
         activeQuestion = 0; // reset active question
-        ValidQuizCheck();
 
+        // Check and set methods
+        ValidQuizCheck();
         SetQuestion();
                     
         // Set Location Info
@@ -73,8 +89,23 @@ public class QuizManager : MonoBehaviour
 
         // Score and Time
         scoreText.text = "0/" + quizSize;
-        
-        
+
+        // if the quiz has a time goal
+        if (quizData.hasTimeGoal)
+        {
+            // invalid time goal check
+            if (quizData.timeGoal <= 0)
+            {
+                Debug.Log("Error: Time Goal is invalid");
+            }
+            else
+            {
+                quizTimeGoal = quizData.timeGoal; // get time goal
+                quizTimeGoal *= 60; // convert to total seconds
+                Mathf.Round(quizTimeGoal); // round
+            }
+        }
+
         // activate start screen
         if (startScreen != null)
         {
@@ -85,6 +116,11 @@ public class QuizManager : MonoBehaviour
         {
             endScreen.SetActive(false);
         }
+    }
+
+    void Awake()
+    {
+    
     }
 
     // Update is called once per frame
@@ -103,6 +139,17 @@ public class QuizManager : MonoBehaviour
             if (timeSeconds >= 60f)
             {
                 timeMinutes++;
+                timeSeconds = 0;
+            }
+
+            // time goal check
+            if (timeSeconds <= quizTimeGoal)
+            {
+                underTime = true;
+            }
+            else
+            {
+                underTime = false;
             }
         }
 
@@ -284,21 +331,119 @@ public class QuizManager : MonoBehaviour
         QuizResults();
 
         timerActive = false;
-        //quizFinished = true;
+        quizEnded = true;
+
+        // activate end screen
+        endScreen.SetActive(true);
+
+        // deactivate main quiz screen
+        quizScreen.SetActive(false);
+
 
         OnQuizEnd.Invoke();
     }
 
-    void QuizResults()
+    void ResetQuiz()
     {
+        OnQuizReset.Invoke();
+    }
+
+    void QuizResults()
+    {       
         // collect final score
         finalScore = currentScore;
+
         // collect final time
         finalTime = (timeMinutes * 60) + timeSeconds; // total seconds
 
         finalTime = Mathf.Round(finalTime);
 
+        // set squizzy popup text
+        QuizResultText(currentScore);
+        //
+
+        // Add bonuses
+        AddQuizBonuses();
 
         Debug.Log("Quiz Complete! Final Score: " + finalScore);
+    }
+
+    void QuizResultText(float finalScore)
+    {
+        // Call this BEFORE applying the final bonuses
+        // calculate scoring texts
+        float bad = quizSize / 4; // 25%
+        float medium = quizSize / 2; // 50%
+        float good = (quizSize / 2) * 3; // 75%
+
+        // BAD score
+        if (finalScore <= bad)
+        {
+            squizzyResultText.text = badScore;
+        }
+        // MEDIUM score
+        else if (finalScore <= medium && finalScore > bad)
+        {
+            squizzyResultText.text = mediumScore;
+        }
+        // GOOD score
+        else if (finalScore <= good && finalScore < quizSize && finalScore > medium)
+        {
+            squizzyResultText.text = goodScore;
+        }
+        // PERFECT score
+        else if (finalScore >= quizSize)
+        {
+            squizzyResultText.text = perfectScore;
+
+            scorePerfect = true;
+        }
+        // FAIL score
+        else if (finalScore == 0)
+        {
+            squizzyResultText.text = failScore;
+        }
+        // if none of the above
+        else
+        {
+            squizzyResultText.text = "this code sucks!";
+        }
+
+    }
+
+    void AddQuizBonuses()
+    {
+        // adds perfect score and time multipliers
+
+        float perfectMultiplier;
+
+        if (quizSize <= 6) { perfectMultiplier = 1.5f; } // for small quizzes
+        else { perfectMultiplier = 1.25f; } // for normal and large sized quizzes 
+        
+        // SCORE
+        if (scorePerfect)
+        {
+            Debug.Log("perfect multiplier");
+            finalScore *= perfectMultiplier;
+
+            // invoke perfect score event
+            OnPerfectScore.Invoke();
+        }
+        
+        // TIME
+        if (underTime)
+        {
+            if (finalTime <= quizTimeGoal)
+            {
+                Debug.Log("time goal multiplier");
+                finalScore *= 1.25f;
+
+                // invoke time goal event
+                OnTimeGoal.Invoke();
+            }
+        }
+
+        // round the multiplied score
+        finalScore = Mathf.Round(finalScore);
     }
 }

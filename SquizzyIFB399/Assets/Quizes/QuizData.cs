@@ -6,8 +6,8 @@ using UnityEngine;
 public class QuizData : ScriptableObject
 {
     public string quizLocationName, quizLocationAddress;
-    public bool hasTimeLimit;
-    public float timeLimit;
+    public bool hasTimeGoal;
+    public float timeGoal;
     
     public Question[] quizQuestions;
 }

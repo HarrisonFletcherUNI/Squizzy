@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quizLocationName: Star Trek Example Quiz
   quizLocationAddress: Alpha Quadrant
-  hasTimeLimit: 0
-  timeLimit: 0
+  hasTimeGoal: 1
+  timeGoal: 0.3
   quizQuestions:
   - questionText: What is Captain Picard's first name?
     questionImage: {fileID: 2800000, guid: 07ae0d73d62673b4ba855948eccfb091, type: 3}
